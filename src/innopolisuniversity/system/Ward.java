@@ -1,27 +1,37 @@
 package innopolisuniversity.system;
 
+import innopolisuniversity.users.Patient;
+
 public class Ward {
     private static int numberOfCreatedWard = 0;
 
     private final int number;
-    private boolean free;
     private final int id;
+    private Patient patient;
 
     public Ward(int number) {
         this.number = number;
         this.id = ++numberOfCreatedWard;
     }
 
+    public void makeFree() {
+        patient = null;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
     public int getNumber() {
         return number;
     }
 
-    public void setFree(boolean free) {
-        this.free = free;
-    }
-
     public boolean isFree() {
-        return free;
+        return patient == null;
     }
 
     public int getId() {
@@ -30,6 +40,6 @@ public class Ward {
 
     @Override
     public String toString() {
-        return String.format("{Ward number=%d, free=%d}", number, free);
+        return String.format("{Ward number=%d, free=%b}", number, isFree());
     }
 }

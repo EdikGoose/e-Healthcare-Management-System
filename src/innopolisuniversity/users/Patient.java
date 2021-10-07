@@ -1,7 +1,6 @@
 package innopolisuniversity.users;
 
 import innopolisuniversity.system.Registry;
-import innopolisuniversity.system.Ward;
 import innopolisuniversity.system.data.PatientController;
 
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ public class Patient extends User {
 
     private final LocalDate birthDate;
     private boolean hospitalized;
-    private Ward wardOccupied;
     
     public Patient(String name, String login, String password, LocalDate birthDate) {
         super(name, login, password);
@@ -43,13 +41,6 @@ public class Patient extends User {
         Registry.getInstance().makeAppointment(this);
     }
 
-    public Ward getWardOccupied() {
-        return wardOccupied;
-    }
-
-    public void setWardOccupied(Ward wardOccupied) {
-        this.wardOccupied = wardOccupied;
-    }
 
     @Override
     public int getId() {

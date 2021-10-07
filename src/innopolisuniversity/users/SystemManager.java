@@ -1,8 +1,7 @@
 package innopolisuniversity.users;
 
+import innopolisuniversity.system.Registry;
 import innopolisuniversity.system.SpecializationEnum;
-import innopolis.university.system.data.*;
-import innopolis.university.users.staff.*;
 import innopolisuniversity.system.data.*;
 import innopolisuniversity.users.staff.AdultDepartmentStaffFactory;
 import innopolisuniversity.users.staff.ChildDepartmentStaffFactory;
@@ -49,6 +48,14 @@ public class SystemManager extends User {
 
     public void addMedicine(){
         MedicineController.getInstance().addMedicine();
+    }
+
+    public int getMedicineNumber() {
+        return MedicineController.getInstance().getMedicinesNumber();
+    }
+
+    public double getOccupiedWardsPercentage() {
+        return Registry.getInstance().getOccupiedWardsPercentage();
     }
 
 

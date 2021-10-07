@@ -3,7 +3,7 @@ package innopolisuniversity.system;
 import innopolisuniversity.system.data.*;
 import innopolisuniversity.users.Patient;
 import innopolisuniversity.users.User;
-import innopolis.university.users.staff.*;
+import innopolisuniversity.users.staff.*;
 import innopolisuniversity.users.staff.Doctor;
 
 import java.time.LocalDate;
@@ -57,12 +57,16 @@ public final class Registry {
 
     public void dischargePatient(Patient patient) {
         patient.setHospitalized(false);
+        Ward occupiedWard = WardController.getInstance().getAll().stream()
+                .filter(w -> w.getPatient().equals(patient))
+                .toList().get(0);
+        occupiedWard.makeFree();
         PatientController.getInstance().update(patient); // update in database
     }
 
     public void hospitalizePatient(Patient patient) {
         patient.setHospitalized(true);
-        patient.setWardOccupied();
+        WardController.getInstance().getAnyAvailableWard().setPatient(patient);
         PatientController.getInstance().update(patient); // update in database
     }
 
@@ -78,6 +82,12 @@ public final class Registry {
         return allReports.stream()
                 .filter(report -> report.doctor().equals(doctor))
                 .toList();
+    }
+
+    public double getOccupiedWardsPercentage() {
+        double allWardsCount = WardController.getInstance().getAll().size();
+        double occupiedWards = allWardsCount - WardController.getInstance().getAvailableWards().size();
+        return occupiedWards / allWardsCount * 100;
     }
 
 
@@ -105,9 +115,5 @@ public final class Registry {
                 DoctorController.getInstance().getChildDepartmentDoctor();
 
         return doctors.get(new Random().nextInt(doctors.size()));
-    }
-
-    private Ward getAvailableWard() {
-        return
     }
 }

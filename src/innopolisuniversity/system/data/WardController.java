@@ -4,7 +4,7 @@ import innopolisuniversity.system.Ward;
 
 import java.util.List;
 
-public class WardController implements AbstractController<Ward, Integer> {
+public class    WardController implements AbstractController<Ward, Integer> {
 
     private static WardController instance;
 
@@ -52,7 +52,13 @@ public class WardController implements AbstractController<Ward, Integer> {
     }
 
 
-    public L getAvailableWards() {
-        return ge
+    public List<Ward> getAvailableWards() {
+        return getAll().stream().filter(Ward::isFree).toList();
+    }
+
+    public Ward getAnyAvailableWard() {
+        List<Ward> availableWards = getAvailableWards();
+        return availableWards.isEmpty() ?
+                null : getAvailableWards().get(0);
     }
 }
