@@ -50,4 +50,9 @@ public class WardController implements AbstractController<Ward, Integer> {
     public Integer getIdForNewEntity() {
         return getAll().size();
     }
+
+
+    public L getAvailableWards() {
+        return ge
+    }
 }

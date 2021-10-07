@@ -11,9 +11,10 @@ import java.time.temporal.ChronoUnit;
  * Class represents the account of a patient
  */
 public class Patient extends User {
+
     private final LocalDate birthDate;
     private boolean hospitalized;
-    private Ward wardO
+    private Ward wardOccupied;
     
     public Patient(String name, String login, String password, LocalDate birthDate) {
         super(name, login, password);
@@ -40,6 +41,14 @@ public class Patient extends User {
 
     public void visitDoctor() {
         Registry.getInstance().makeAppointment(this);
+    }
+
+    public Ward getWardOccupied() {
+        return wardOccupied;
+    }
+
+    public void setWardOccupied(Ward wardOccupied) {
+        this.wardOccupied = wardOccupied;
     }
 
     @Override

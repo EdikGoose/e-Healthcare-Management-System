@@ -1,9 +1,6 @@
 package innopolisuniversity.system;
 
-import innopolisuniversity.system.data.DoctorController;
-import innopolisuniversity.system.data.PatientController;
-import innopolisuniversity.system.data.ReportController;
-import innopolisuniversity.system.data.SystemManagerController;
+import innopolisuniversity.system.data.*;
 import innopolisuniversity.users.Patient;
 import innopolisuniversity.users.User;
 import innopolis.university.users.staff.*;
@@ -65,6 +62,7 @@ public final class Registry {
 
     public void hospitalizePatient(Patient patient) {
         patient.setHospitalized(true);
+        patient.setWardOccupied();
         PatientController.getInstance().update(patient); // update in database
     }
 
@@ -89,6 +87,12 @@ public final class Registry {
             makeReport(patient, doctor);
     }
 
+    public Patient registryPatient(String login, String password, String name, LocalDate birthdate) {
+        Patient patient = new Patient(name, login, password, birthdate);
+        PatientController.getInstance().create(patient);
+        return patient;
+    }
+
     /**
      * Return an available doctor which {@code patient} can visit
      *  (For simplicity, it returns a random doctor)
@@ -103,9 +107,7 @@ public final class Registry {
         return doctors.get(new Random().nextInt(doctors.size()));
     }
 
-    public Patient registryPatient(String login, String password, String name, LocalDate birthdate) {
-        Patient patient = new Patient(name, login, password, birthdate);
-        PatientController.getInstance().create(patient);
-        return patient;
+    private Ward getAvailableWard() {
+        return
     }
 }
