@@ -3,7 +3,7 @@
 
 ### Design Patterns
 
-The main design pattern our team has implemented is an **abstract factory**. We are using an ****abstract factory pattern since our implementation uses two departments of the hospital (for children and for adults), and two types of medical staff (doctors and nurses). An abstract factory allows us to work with various categories of medical staff that perform some specific actions (i.e. treatment) in their own way. At the same moment, our code doesn't depend on concrete medical staff classes. Applying abstract factory allows us to extend our programs in a simple manner, extending existing departments and employees and creating new ones.
+The main design pattern our team has implemented is an **abstract factory**. We are using an **abstract factory** pattern since our implementation uses two departments of the hospital (for children and for adults), and two types of medical staff (doctors and nurses). An abstract factory allows us to work with various categories of medical staff that perform some specific actions (i.e. treatment) in their own way. At the same moment, our code doesn't depend on concrete medical staff classes. Applying abstract factory allows us to extend our programs in a simple manner, extending existing departments and employees and creating new ones.
 
 What is more, we applied **singleton** design pattern for several classes: `Database`, `Registry`, and controllers (classes regulating communication with the database).
 
