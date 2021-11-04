@@ -49,10 +49,20 @@ public final class Registry {
         return null;
     }
 
+    /**
+     * Make report that patient got out from the hospital
+     *  Report contains information about patient, his doctor, date and time and cost
+     * Also it sends notification to patient that report is done
+     * @param patient is patient that got out from the hospital
+     * @param doctor is doctor who was responsible for treatment of patient
+     */
     public void makeReport(Patient patient, Doctor doctor) {
         int newReportId = ReportController.getInstance().getIdForNewEntity();
         Report report = new Report(newReportId, LocalDate.now(), patient, doctor, cost);
         ReportController.getInstance().create(report); // add to database
+        patient.sendNotification(String.format(
+                "Dear %s! Your report from hospital is done! You can grab it any day from 8.00-21.00",
+                patient.getName()));
     }
 
     public void dischargePatient(Patient patient) {
@@ -97,8 +107,9 @@ public final class Registry {
             makeReport(patient, doctor);
     }
 
-    public Patient registryPatient(String login, String password, String name, LocalDate birthdate) {
-        Patient patient = new Patient(name, login, password, birthdate);
+    public Patient registryPatient(String login, String password, String name, LocalDate birthdate,
+                                   String email, String phoneNumber) {
+        Patient patient = new Patient(name, login, password, birthdate, email, phoneNumber);
         PatientController.getInstance().create(patient);
         return patient;
     }

@@ -45,7 +45,7 @@ public final class AuthorizationFrontend extends Frontend {
      * @throws IllegalStateException when user with such parameters has already had registered
      */
     public void registerClicked(String login, String password, String name,
-                                int birthDay, int birthMonth, int birthYear)
+                                int birthDay, int birthMonth, int birthYear, String email, String phoneNumber)
             throws IllegalStateException {
         User user = Registry.getInstance().findUser(login, password);
 
@@ -55,7 +55,8 @@ public final class AuthorizationFrontend extends Frontend {
         }
         try {
             LocalDate birthdate = LocalDate.of(birthYear, birthMonth, birthDay);
-            Patient patient = Registry.getInstance().registryPatient(login, password, name, birthdate);
+            Patient patient = Registry.getInstance().registryPatient(login, password, name,
+                    birthdate, email, phoneNumber);
 
             PatientFrontend patientFrontend = new PatientFrontend(writer, patient);
             patientFrontend.start();

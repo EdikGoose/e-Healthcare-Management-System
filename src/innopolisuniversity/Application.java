@@ -13,7 +13,7 @@ public class Application {
         authorizationFrontend.start();
 
         authorizationFrontend.registerClicked("andrey123", "123", "Andrey",
-                10, 12, 1968);
+                10, 12, 1968, "andrey123@gmail.com", "+78005553535");
 
     }
 }
