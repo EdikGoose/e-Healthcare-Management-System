@@ -77,7 +77,7 @@ public class Patient extends User {
         if (emailSelected)
             notifier = new EmailDecorator(notifier, email);
         if (telegramSelected)
-            notifier = new TelegramDecorator(notifier, email);
+            notifier = new TelegramDecorator(notifier, phoneNumber);
     }
 
     /**

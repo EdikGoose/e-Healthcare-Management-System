@@ -4,9 +4,8 @@ import innopolisuniversity.users.Patient;
 
 import java.io.PrintWriter;
 
-
 public final class PatientFrontend extends Frontend {
-    private final Patient patient;
+    private Patient patient;
     private boolean checkBoxForEmail;
     private boolean checkBoxForTelegram;
 
@@ -26,22 +25,25 @@ public final class PatientFrontend extends Frontend {
         patient.visitDoctor();
     }
 
-    public void emailCheckBoxUnselected() {
-        patient.updateNotifier(true, checkBoxForTelegram);
+    public void emailCheckBoxClicked(boolean selected) {
+        checkBoxForEmail = selected;
+        updateNotifier();
     }
 
-    public void telegramCheckBoxUnselected() {
-        checkBoxForTelegram = true;
+    public void telegramCheckBoxClicked(boolean selected) {
+        checkBoxForTelegram = selected;
+        updateNotifier();
+    }
+
+    private void updateNotifier() {
         patient.updateNotifier(checkBoxForEmail, checkBoxForTelegram);
     }
 
-    public void emailCheckBoxSelected() {
-        checkBoxForEmail = !checkBoxForEmail;
-        patient.updateNotifier(checkBoxForEmail, checkBoxForTelegram);
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void telegramCheckBoxSelected() {
-        checkBoxForTelegram=!checkBoxForTelegram;
-        patient.updateNotifier(checkBoxForEmail, checkBoxForTelegram);
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }
