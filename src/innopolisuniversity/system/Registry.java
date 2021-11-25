@@ -3,14 +3,12 @@ package innopolisuniversity.system;
 import innopolisuniversity.system.data.*;
 import innopolisuniversity.users.Patient;
 import innopolisuniversity.users.User;
-import innopolisuniversity.users.staff.*;
 import innopolisuniversity.users.staff.Doctor;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 
 public final class Registry {
     // for simplicity make cost constant
@@ -52,7 +50,7 @@ public final class Registry {
     /**
      * Make report that patient got out from the hospital
      *  Report contains information about patient, his doctor, date and time and cost
-     * Also it sends notification to patient that report is done
+     * Also it sends notification to patient that report is done (and optionally some information about report)
      * @param patient is patient that got out from the hospital
      * @param doctor is doctor who was responsible for treatment of patient
      */
@@ -60,11 +58,13 @@ public final class Registry {
         int newReportId = ReportController.getInstance().getIdForNewEntity();
         Report report = new Report(newReportId, LocalDate.now(), patient, doctor, cost);
         ReportController.getInstance().create(report); // add to database
-        patient.sendNotification(String.format(
-                "Dear %s! Your report from hospital is done! You can grab it any day from 8.00-21.00",
-                patient.getName()));
+        patient.sendNotificationTo(report);
     }
 
+    /**
+     * Discharge a patient: unset hospitalized flag, free ward, commit changes to database
+     * @param patient is a patient to discharge
+     */
     public void dischargePatient(Patient patient) {
         patient.setHospitalized(false);
         Ward occupiedWard = WardController.getInstance().getAll().stream()
@@ -74,12 +74,20 @@ public final class Registry {
         PatientController.getInstance().update(patient); // update in database
     }
 
+    /**
+     * Hospitalize a patient: set hospitalized flag, occupy ward, commit changes to database
+     * @param patient is a patient to hospitalize
+     */
     public void hospitalizePatient(Patient patient) {
         patient.setHospitalized(true);
         WardController.getInstance().getAnyAvailableWard().setPatient(patient);
         PatientController.getInstance().update(patient); // update in database
     }
 
+
+    /**
+     * @return list of patients to hospitalize
+     */
     public List<Patient> getHospitalizedPatients() {
         var allPatients = PatientController.getInstance().getAll();
         return allPatients.stream()
@@ -87,6 +95,9 @@ public final class Registry {
                 .toList();
     }
 
+    /**
+     * @return list of reports associated with given doctor
+     */
     public List<Report> getReportsWithDoctor(Doctor doctor) {
         var allReports = ReportController.getInstance().getAll();
         return allReports.stream()
@@ -94,6 +105,9 @@ public final class Registry {
                 .toList();
     }
 
+    /**
+     * @return the percent of occupied wards related to free wards
+     */
     public double getOccupiedWardsPercentage() {
         double allWardsCount = WardController.getInstance().getAll().size();
         double occupiedWards = allWardsCount - WardController.getInstance().getAvailableWards().size();
@@ -101,13 +115,21 @@ public final class Registry {
     }
 
 
+    /**
+     * Creating an appointment with given patient: hospitalize 
+     *  if doctor decides they are ill and make report in this case
+     */
     public void makeAppointment(Patient patient) {
         var doctor = getAvailableDoctor(patient);
         if (!doctor.hospitalizeIfIll(patient))
             makeReport(patient, doctor);
     }
 
-    public Patient registryPatient(String login, String password, String name, LocalDate birthdate,
+    /**
+     * Register new patient in system
+     * @return a new instance of {@link Patient}-class
+     */
+    public Patient registerPatient(String login, String password, String name, LocalDate birthdate,
                                    String email, String phoneNumber) {
         Patient patient = new Patient(name, login, password, birthdate, email, phoneNumber);
         PatientController.getInstance().create(patient);

@@ -1,6 +1,7 @@
 package innopolisuniversity.users;
 
 import innopolisuniversity.system.Registry;
+import innopolisuniversity.system.Report;
 import innopolisuniversity.system.data.PatientController;
 import innopolisuniversity.system.notifiers.EmailDecorator;
 import innopolisuniversity.system.notifiers.Notifier;
@@ -83,10 +84,10 @@ public class Patient extends User {
     /**
      * Send notification to this patient in different formats
      *  (always by sms and optionally by telegram or/and by email)
-     * @param message is message to notify patient about
+     * @param report represents information about the report that the user is notified about
      */
-    public void sendNotification(String message) {
-        notifier.send(message);
+    public void sendNotificationTo(Report report) {
+        notifier.send(report);
     }
 
     @Override

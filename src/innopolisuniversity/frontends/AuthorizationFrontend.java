@@ -55,7 +55,7 @@ public final class AuthorizationFrontend extends Frontend {
         }
         try {
             LocalDate birthdate = LocalDate.of(birthYear, birthMonth, birthDay);
-            Patient patient = Registry.getInstance().registryPatient(login, password, name,
+            Patient patient = Registry.getInstance().registerPatient(login, password, name,
                     birthdate, email, phoneNumber);
 
             PatientFrontend patientFrontend = new PatientFrontend(writer, patient);
